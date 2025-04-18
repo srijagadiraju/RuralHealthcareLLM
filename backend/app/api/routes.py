@@ -4,6 +4,8 @@ import pandas as pd
 from qdrant_client.http.models import PointStruct
 from app.services.embed import embed_text
 from uuid import uuid5, NAMESPACE_DNS
+from app.services.retrieval import retrieve_chunks
+from app.services.generator import generate_answer
 
 router = APIRouter()
 
@@ -62,27 +64,20 @@ def upload_sample_chunks(limit: int = None, offset: int = 0, batch_size: int = 1
             points = []
 
     return {"status": "success", "uploaded": total}
+
 @router.get("/search")
 def semantic_search(query: str, limit: int = 5):
-    vector = embed_text(f"Q: {query.strip()} A:")
-    
-    search_result = client.search(
-        collection_name="medical_chunks",
-        query_vector=vector,
-        limit=limit,
-        with_payload=True
-    )
-    
+    results = retrieve_chunks(query, limit)
     return {
         "query": query,
         "results": [
             {
-                "score": r.score,
-                "question": r.payload.get("question"),
-                "answer": r.payload.get("answer"),
-                "focus_area": r.payload.get("focus_area")
+                "score":   r["score"],
+                "question": r["question"],
+                "answer":   r["answer"],
+                "focus_area": r["focus_area"]
             }
-            for r in search_result
+            for r in results
         ]
     }
 
@@ -101,4 +96,26 @@ def get_uploaded_chunk_ids(limit: int = 10000):
     return {
         "uploaded_ids": [point.id for point in result[0]],
         "count": len(result[0])
+    }
+
+@router.get("/generate-answer")
+def get_generated_answer(query: str, top_k: int = 5):
+
+    # 1) Retrieve semantic hits
+    records = retrieve_chunks(query, top_k)
+
+    # 2) Extract raw answer chunks from those hits
+    raw_chunks = [r["answer"] for r in records]
+
+    # 3) Take the top 3 for context
+    context_chunks = raw_chunks[:3]
+
+    # 4) Generate the final answer
+    generated = generate_answer(query, context_chunks)
+
+    return {
+        "query": query,
+        "generated_answer": generated,
+        "context_used": context_chunks,
+        "retrieval_scores": [r["score"] for r in records]
     }
