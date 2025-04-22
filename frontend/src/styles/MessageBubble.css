@@ -1,0 +1,11 @@
+.message-bubble {
+  margin: 0.5rem 0;
+}
+
+.message-bubble.user {
+  text-align: right;
+}
+
+.message-bubble.bot {
+  text-align: left;
+}
