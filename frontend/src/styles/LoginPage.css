@@ -1,0 +1,93 @@
+/* src/styles/LoginPage.css */
+.auth-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.auth-header h1 {
+  font-size: 30px;
+  color: #005fb8;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.auth-icon {
+  width: 36px;
+  height: 36px;
+  color: #005fb8;
+}
+
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background: linear-gradient(120deg, #f0e4d7, #e3caa5); */
+  /* background: linear-gradient(120deg, #f0d7d7, #e3a5a5); */
+  /* background: linear-gradient(120deg, #eaf6fd, #8386d4); */
+  /* background: linear-gradient(120deg, #eaf6fd, #cfe9f9); */
+  background: linear-gradient(120deg, #e0f3ff, #c8e6ff);
+}
+
+.login-form {
+  background: white;
+  padding: 60px 40px; /* increasing padding */
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 480px; /* was 360px – increased width */
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* more spacing between inputs */
+}
+
+.login-form h2 {
+  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  font-size: 24px;
+  color: #333;
+}
+
+input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.login-form button {
+  /* background-color: #d39f68; */
+  background-color: #005fb8;
+
+  color: white;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
+  padding: 12px;
+}
+
+.login-form button:hover {
+  background-color: #bf864e;
+}
+
+.redirect-text {
+  font-size: 14px;
+  text-align: center;
+}
+
+.redirect-text span {
+  color: #d39f68;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.error-text {
+  color: crimson;
+  font-size: 14px;
+  text-align: center;
+}
