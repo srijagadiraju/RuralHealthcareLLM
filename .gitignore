@@ -2,3 +2,4 @@
 /preprocessed_chunks.csv
 /backend/.env
 /venv
+node_modules
