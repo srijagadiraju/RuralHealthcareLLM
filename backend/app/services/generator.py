@@ -12,7 +12,8 @@ def generate_answer(query: str, context_chunks: list) -> str:
     prompt = (
         "You are a helpful medical assistant. "
         "Answer the following question using only the provided context. "
-        "Ignore boilerplate and irrelevant information.\n\n"
+        "Ignore boilerplate and irrelevant information. "
+        "If the context does not contain enough information, say that you are not sure based on the current data.\n\n"
         f"Context:\n{context}\n\n"
         f"Question:\n{query}\n\n"
         "Answer:"
