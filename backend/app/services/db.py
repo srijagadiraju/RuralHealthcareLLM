@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from app.core.config import MONGODB_URL
 
+
 client = MongoClient(MONGODB_URL)
 db = client.ruralhealth
 

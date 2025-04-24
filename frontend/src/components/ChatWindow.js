@@ -28,6 +28,11 @@ export default function ChatWindow({ messages }) {
               consult a healthcare professional for medical advice.
             </p>
           )}
+          {msg.sources && (
+            <p className="source-text">
+              <strong>Source:</strong> {msg.sources.join(", ")}
+            </p>
+          )}
         </div>
       ))}
     </div>

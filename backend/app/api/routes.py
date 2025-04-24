@@ -75,7 +75,8 @@ def semantic_search(query: str, limit: int = 5):
                 "score":   r["score"],
                 "question": r["question"],
                 "answer":   r["answer"],
-                "focus_area": r["focus_area"]
+                "focus_area": r["focus_area"],
+                "source": r["source"]
             }
             for r in results
         ]
@@ -117,5 +118,6 @@ def get_generated_answer(query: str, top_k: int = 5):
         "query": query,
         "generated_answer": generated,
         "context_used": context_chunks,
-        "retrieval_scores": [r["score"] for r in records]
+        "retrieval_scores": [r["score"] for r in records],
+        "sources": [r["source"] for r in records]
     }
