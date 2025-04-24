@@ -64,7 +64,11 @@ export default function ChatLayout() {
         `api/generate-answer?query=${encodeURIComponent(userInput)}`
       );
       const data = await res.json();
-      const botMsg = { sender: "bot", text: data.generated_answer };
+      const botMsg = {
+        sender: "bot",
+        text: data.generated_answer,
+        sources: data.sources,
+      };
       const updatedMessages = [...newMessages, botMsg];
       setMessages(updatedMessages);
 
