@@ -34,12 +34,14 @@ function SignupPage() {
     });
   };
 
+  const baseUrl = process.env.REACT_APP_API_URL;
+
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await fetch("api/signup", {
+      const response = await fetch(`${baseUrl}/api/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

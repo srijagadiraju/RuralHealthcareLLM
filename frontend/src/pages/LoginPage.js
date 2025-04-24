@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Cross } from "lucide-react";
 
 import "../styles/LoginPage.css";
+const baseUrl = process.env.REACT_APP_API_URL;
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ function LoginPage() {
     setError("");
 
     try {
-      const response = await fetch("api/login", {
+      const response = await fetch(`${baseUrl}/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

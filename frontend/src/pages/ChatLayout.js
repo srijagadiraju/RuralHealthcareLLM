@@ -9,6 +9,8 @@ import { Cross } from "lucide-react";
 
 import "../styles/ChatLayout.css";
 
+const baseUrl = process.env.REACT_APP_API_URL;
+
 export default function ChatLayout() {
   const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
@@ -28,7 +30,7 @@ export default function ChatLayout() {
 
   useEffect(() => {
     if (userId) {
-      fetch(`api/chats?user_id=${userId}`)
+      fetch(`${baseUrl}/api/chats?user_id=${userId}`)
         .then((res) => res.json())
         .then((data) => setChatSessions(data.sessions || []))
         .catch((err) => {
@@ -40,7 +42,7 @@ export default function ChatLayout() {
 
   useEffect(() => {
     if (selectedSessionId) {
-      fetch(`api/chats/${selectedSessionId}/messages`)
+      fetch(`${baseUrl}/api/chats/${selectedSessionId}/messages`)
         .then((res) => res.json())
         .then((data) => setMessages(data.messages || []))
         .catch((err) => {
@@ -61,7 +63,7 @@ export default function ChatLayout() {
 
     try {
       const res = await fetch(
-        `api/generate-answer?query=${encodeURIComponent(userInput)}`
+        `${baseUrl}/api/generate-answer?query=${encodeURIComponent(userInput)}`
       );
       const data = await res.json();
       const botMsg = {
@@ -72,19 +74,21 @@ export default function ChatLayout() {
       const updatedMessages = [...newMessages, botMsg];
       setMessages(updatedMessages);
 
-      await fetch(`api/chats/${selectedSessionId}/message`, {
+      await fetch(`${baseUrl}/api/chats/${selectedSessionId}/message`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userMsg),
       });
 
-      await fetch(`api/chats/${selectedSessionId}/message`, {
+      await fetch(`${baseUrl}/api/chats/${selectedSessionId}/message`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(botMsg),
       });
       // Fetches updated chat list and move the current chat to the top
-      const updatedSessions = await fetch(`api/chats?user_id=${userId}`);
+      const updatedSessions = await fetch(
+        `${baseUrl}/api/chats?user_id=${userId}`
+      );
       const updatedData = await updatedSessions.json();
       const reordered = updatedData.sessions?.filter(
         (s) => s._id !== selectedSessionId
@@ -105,7 +109,7 @@ export default function ChatLayout() {
 
   const handleNewChat = async () => {
     const title = `Chat ${(chatSessions || []).length + 1}`;
-    const res = await fetch("api/chats/new", {
+    const res = await fetch(`${baseUrl}/api/chats/new`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id: userId, title }),
@@ -131,7 +135,7 @@ export default function ChatLayout() {
 
   const handleDeleteConfirmed = async () => {
     try {
-      const res = await fetch(`api/chats/${chatToDelete}`, {
+      const res = await fetch(`${baseUrl}/api/chats/${chatToDelete}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to delete chat");
