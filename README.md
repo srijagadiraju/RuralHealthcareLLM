@@ -72,13 +72,16 @@ To run the fullstack app (frontend + backend) using Docker:
    cd RuralHealthcareLLM
 ```
 
-3. Create a .env file inside the backend/ folder and add your credentials:
-   <br>note: If a SECRET KEY is not defined, the system defaults to a fallback value of "supersecretkey". OK to continue, project will function the same<br>
+3. Create a .env file inside the backend/ folder and with the following variables:
+   <br>Note: If a SECRET KEY is not defined, the system defaults to a fallback value of "supersecretkey". OK to continue, project will function the same.<br>
 
 ```bash
 # backend/.env
-MONGODB_URI=your_mongodb_connection_string
- SECRET_KEY=your_jwt_secret_key
+MONGODB_URL=your_mongodb_connection_string
+SECRET_KEY=your_jwt_secret_key
+QDRANT_API_KEY=your_qdrant_api_key
+QDRANT_URL=your_qdrant_url
+GEMINI_API_KEY=your_gemini_api_key
 ```
 
 4. Run the app:
