@@ -97,6 +97,67 @@ Frontend → http://localhost:3000
 Backend API → http://localhost:8000
 ```
 
+## Setting Up Project Locally Without Docker
+
+1. Clone this repositry to your local machine
+
+### Backend Setup
+
+1. Open a terminal and navigate to the backend folder:
+   ```bash
+   cd backend
+   ```
+2. Create and activate a virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+3. Install the backend dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Create a .env file inside the backend/ folder and with the following variables:
+   <br>Note: If a SECRET KEY is not defined, the system defaults to a fallback value of "supersecretkey". OK to continue, project will function the same.<br>
+
+```bash
+# backend/.env
+MONGODB_URL=your_mongodb_connection_string
+SECRET_KEY=your_jwt_secret_key
+QDRANT_API_KEY=your_qdrant_api_key
+QDRANT_URL=your_qdrant_url
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+5. Run the FastAPI backend server:
+
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+
+### Frontend Setup
+
+1. Open a new terminal and navigate to the frontend folder:
+   ```bash
+   cd frontend
+   ```
+2. Install the frontend dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the React application:
+
+   ```bash
+   npm start
+   ```
+
+   The application will now be running locally at:
+
+   ```arduino
+   http://localhost:3000
+   ```
+
 ## Technologies Used
 
 - **Frontend:** React.js, CSS, Lucide Icons
