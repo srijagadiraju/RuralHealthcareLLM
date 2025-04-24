@@ -14,7 +14,6 @@ WORKDIR /app
 COPY backend/app /app/app
 COPY backend/requirements.txt /app/
 # Delete COPY backend/.env /.env for deployment
-COPY backend/.env /.env
 COPY preprocessing /app/preprocessing
 COPY medquad.csv /app/medquad.csv
 
