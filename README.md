@@ -58,7 +58,7 @@ To run pipeline do the following commands in roots directory:
 
 ## Setting Up With Docker
 
-To run the fullstack app (frontend + backend) using Docker:
+Before processing, ensure the Docker Desktop is installed and the Docker engine is running on your machine. You must have Docker running to build and launch the services using docker-compose. To run the fullstack app (frontend + backend) using Docker:
 
 1. Clone this repo:
 
@@ -189,4 +189,4 @@ GEMINI_API_KEY=your_gemini_api_key
 
 **Chat Interface**
 
-![Chat](screenshots/chatPage.png)
+![Chat](screenshots/chat.png)

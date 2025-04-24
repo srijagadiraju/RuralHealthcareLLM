@@ -10,7 +10,6 @@ function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [requirements, setRequirements] = useState({
@@ -20,6 +19,10 @@ function SignupPage() {
     special: false,
     length: false,
   });
+
+  const baseURL =
+    process.env.REACT_APP_API_URL ||
+    `${window.location.protocol}//${window.location.hostname}:8000`;
 
   const handlePasswordChange = (e) => {
     const pwd = e.target.value;
@@ -39,7 +42,7 @@ function SignupPage() {
     setError("");
 
     try {
-      const response = await fetch("api/signup", {
+      const response = await fetch(`${baseURL}/api/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -11,12 +11,16 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const baseURL =
+    process.env.REACT_APP_API_URL ||
+    `${window.location.protocol}//${window.location.hostname}:8000`;
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await fetch("api/login", {
+      const response = await fetch(`${baseURL}/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,9 +34,9 @@ function LoginPage() {
 
       const data = await response.json();
       localStorage.setItem("token", data.access_token);
-      localStorage.setItem("name", data.name); // Stores the name
+      localStorage.setItem("name", data.name);
       localStorage.setItem("user_id", data.user_id);
-      console.log("Successful login"); // testing: Console confirmation
+      console.log("Successful login");
       navigate("/chat");
     } catch (err) {
       setError("Invalid email or password. Please try again.");

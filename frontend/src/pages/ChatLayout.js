@@ -9,6 +9,11 @@ import { Cross } from "lucide-react";
 
 import "../styles/ChatLayout.css";
 
+// Dynamic backend base URL
+const baseURL =
+  process.env.REACT_APP_API_URL ||
+  `${window.location.protocol}//${window.location.hostname}:8000`;
+
 export default function ChatLayout() {
   const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
@@ -28,7 +33,7 @@ export default function ChatLayout() {
 
   useEffect(() => {
     if (userId) {
-      fetch(`api/chats?user_id=${userId}`)
+      fetch(`${baseURL}/api/chats?user_id=${userId}`)
         .then((res) => res.json())
         .then((data) => setChatSessions(data.sessions || []))
         .catch((err) => {
@@ -40,7 +45,7 @@ export default function ChatLayout() {
 
   useEffect(() => {
     if (selectedSessionId) {
-      fetch(`api/chats/${selectedSessionId}/messages`)
+      fetch(`${baseURL}/api/chats/${selectedSessionId}/messages`)
         .then((res) => res.json())
         .then((data) => setMessages(data.messages || []))
         .catch((err) => {
@@ -61,30 +66,44 @@ export default function ChatLayout() {
 
     try {
       const res = await fetch(
-        `api/generate-answer?query=${encodeURIComponent(userInput)}`
+        `${baseURL}/api/generate-answer?query=${encodeURIComponent(userInput)}`
       );
       const data = await res.json();
+
+      // Determine if all retrieval scores are above the threshold
+      // 🔍 Log the retrieval scores for visibility
+      console.log("Retrieval scores:", data.retrieval_scores);
+      const threshold = 0.67;
+      const validSources =
+        data.retrieval_scores &&
+        data.retrieval_scores.every((score) => score > threshold)
+          ? data.sources
+          : [];
+
       const botMsg = {
         sender: "bot",
         text: data.generated_answer,
-        sources: data.sources,
+        sources: validSources,
       };
+
       const updatedMessages = [...newMessages, botMsg];
       setMessages(updatedMessages);
 
-      await fetch(`api/chats/${selectedSessionId}/message`, {
+      await fetch(`${baseURL}/api/chats/${selectedSessionId}/message`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userMsg),
       });
 
-      await fetch(`api/chats/${selectedSessionId}/message`, {
+      await fetch(`${baseURL}/api/chats/${selectedSessionId}/message`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(botMsg),
       });
-      // Fetches updated chat list and move the current chat to the top
-      const updatedSessions = await fetch(`api/chats?user_id=${userId}`);
+
+      const updatedSessions = await fetch(
+        `${baseURL}/api/chats?user_id=${userId}`
+      );
       const updatedData = await updatedSessions.json();
       const reordered = updatedData.sessions?.filter(
         (s) => s._id !== selectedSessionId
@@ -105,7 +124,7 @@ export default function ChatLayout() {
 
   const handleNewChat = async () => {
     const title = `Chat ${(chatSessions || []).length + 1}`;
-    const res = await fetch("api/chats/new", {
+    const res = await fetch(`${baseURL}/api/chats/new`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id: userId, title }),
@@ -131,7 +150,7 @@ export default function ChatLayout() {
 
   const handleDeleteConfirmed = async () => {
     try {
-      const res = await fetch(`api/chats/${chatToDelete}`, {
+      const res = await fetch(`${baseURL}/api/chats/${chatToDelete}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to delete chat");
