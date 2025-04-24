@@ -21,18 +21,25 @@ export default function ChatWindow({ messages }) {
             </strong>
           )}{" "}
           {msg.text}
-          {/* Show disclaimer for bot messages */}
+          {/* Disclaimer for bot responses */}
           {msg.sender === "bot" && (
             <p className="disclaimer-text">
               <strong>Note:</strong> This is an AI-generated response. Always
               consult a healthcare professional for medical advice.
             </p>
           )}
-          {msg.sources && (
-            <p className="source-text">
-              <strong>Source:</strong> {msg.sources.join(", ")}
-            </p>
-          )}
+          {/* Conditionally show sources */}
+          {msg.sender === "bot" &&
+            msg.sources &&
+            msg.sources.length > 0 &&
+            msg.text &&
+            !msg.text
+              .toLowerCase()
+              .startsWith("i am not sure based on the current data") && (
+              <p className="source-text">
+                <strong>Source:</strong> {msg.sources.join(", ")}
+              </p>
+            )}
         </div>
       ))}
     </div>

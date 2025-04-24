@@ -64,10 +64,18 @@ export default function ChatLayout() {
         `api/generate-answer?query=${encodeURIComponent(userInput)}`
       );
       const data = await res.json();
+      console.log("Retrieval scores:", data.retrieval_scores);
+      const threshold = 0.67;
+      const validSources =
+        data.retrieval_scores &&
+        data.retrieval_scores.every((score) => score > threshold)
+          ? data.sources
+          : [];
+
       const botMsg = {
         sender: "bot",
         text: data.generated_answer,
-        sources: data.sources,
+        sources: validSources,
       };
       const updatedMessages = [...newMessages, botMsg];
       setMessages(updatedMessages);
