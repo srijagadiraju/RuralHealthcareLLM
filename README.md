@@ -90,6 +90,13 @@ GEMINI_API_KEY=your_gemini_api_key
 docker-compose up --build
 ```
 
+This will build and start both the backend and frontend containers, making the app available at:
+
+```nginx
+Frontend → http://localhost:3000
+Backend API → http://localhost:8000
+```
+
 ## Technologies Used
 
 - **Frontend:** React.js, CSS, Lucide Icons
